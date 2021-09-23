@@ -14,7 +14,8 @@ let arrayStartMap = [],
     continentArray = [],
     arrTotalNumPeople = [],
     arrayEndMap = [],
-    pandemicStartMap= '01000000X000X011X0X';
+    pandemicStartMap= '01000000X000X011X0X',
+    arrayMap = pandemicStartMap.split(''); 
 
     
 function changeWorldMap(arr) {
@@ -43,30 +44,12 @@ function modernArrMaps(maps) {
 }
 modernArrMaps(continentArray);
 
-function createStartWordMap(map) {
-    let arr = map.split(''); 
-    arr.forEach(() => {
-        mapStar.innerHTML += ` <div class="square_start"></div>`;
-    });
-
-    const squares = document.querySelectorAll(".square_start");
-    arr.forEach((item, index) => {      
-        if(item == uninfected) {
-            squares[index].classList.add('uninfected');
-        } else if (item == infected) {
-            squares[index].classList.add('infected');
-        }
-    });
-}
-createStartWordMap(pandemicStartMap);
-
-function createEndWordMap(map) {
-   
+function createWordMap(map, mapStar, className ) {
     map.forEach(() => {
-        mapEnd.innerHTML += ` <div class="square_end"></div>`;
+        mapStar.innerHTML += ` <div class=${className}></div>`;
     });
 
-    const squares = document.querySelectorAll(".square_end");
+    const squares = document.querySelectorAll(`.${className}`);
     map.forEach((item, index) => {      
         if(item == uninfected) {
             squares[index].classList.add('uninfected');
@@ -75,7 +58,8 @@ function createEndWordMap(map) {
         }
     });
 }
-createEndWordMap(arrayEndMap);
+createWordMap(arrayMap, mapStar, "square_start");
+createWordMap(arrayEndMap, mapEnd, "square_end");
 
 function calcDate (arr) {
     let infectedCount = 0;
@@ -94,7 +78,7 @@ function calcDate (arr) {
 }
 calcDate(arrTotalNumPeople);
 
-function test(input)  {
+function isValidData(input)  {
     return /[0-1]|[X]/.test(input);
 }
 
@@ -102,9 +86,10 @@ function getData(btn) {
     btn.addEventListener('click', () => {
         let userMap = inputDate.value;
         if (userMap != '') {
-            if(test(userMap)) {
+            if(isValidData(userMap)) {
                 pandemicStartMap= '';
                 pandemicStartMap = userMap.toUpperCase();
+                arrayMap = pandemicStartMap.split(''); 
                 arrayStartMap = [];
                 continentArray = [];
                 arrTotalNumPeople = [];
@@ -116,8 +101,8 @@ function getData(btn) {
         
                 changeWorldMap(arrayStartMap); 
                 modernArrMaps(continentArray);
-                createStartWordMap(pandemicStartMap);
-                createEndWordMap(arrayEndMap);
+                createWordMap(arrayMap, mapStar, "square_start");
+                createWordMap(arrayEndMap, mapEnd, "square_end");
                 calcDate(arrTotalNumPeople);
             } else {
                 alert("incorrect data format");
@@ -128,7 +113,3 @@ function getData(btn) {
     });
 }  
 getData(sendBtn);
-
- 
-
-
